@@ -2,39 +2,51 @@
 {
     public class Logger : ILogger
     {
-        string eventLogFile = Path.Combine(Directory.GetCurrentDirectory(), $"events.txt");
-        string errorLogFile = Path.Combine(Directory.GetCurrentDirectory(), $"error.txt");
+        private ReaderWriterLockSlim lock_ = new ReaderWriterLockSlim();
+
+        private string logDirectory { get; set; }
 
         public Logger()
         {
-            File.Create(eventLogFile).Close();
-            File.Create(errorLogFile).Close();
+            logDirectory = AppDomain.CurrentDomain.BaseDirectory + @"/_logs/" + DateTime.Now.ToString("dd-MM-yy HH-mm-ss") + @"/";
+
+            if (!Directory.Exists(logDirectory))
+                Directory.CreateDirectory(logDirectory);
         }
 
-        public void WriteEvent(string eventMessage) { Console.WriteLine(eventMessage); }
-
-        public void WriteError(string errorMessage) { Console.WriteLine(errorMessage); }
-
-        public  void WriteEventLogToFile(string errorMessage)
+        public void WriteEvent(string eventMessage)
         {
-            if (!File.Exists(eventLogFile))           //файл лога должен создаваться при запуске программы
+            lock_.EnterWriteLock();
+            try
             {
-                File.Create(eventLogFile).Close();
+                using (StreamWriter writer = new StreamWriter(logDirectory + "events.txt", append: true))
+                {
+                    writer.WriteLine(eventMessage);
+                }
+            }
+            finally
+            {
+                lock_.ExitWriteLock();
             }
 
-            // Используем асинхронную запись в файл
-             File.AppendAllTextAsync(eventLogFile, errorMessage+"\n");
         }
 
-        public  void WriteErrorLogToFile(string errorMessage)
+        public void WriteError(string errorMessage)
         {
-            if (!File.Exists(errorLogFile))             //файл лога должен создаваться при запуске программы
+            lock_.EnterWriteLock();
+            try
             {
-                File.Create(errorLogFile).Close();
+                using (StreamWriter writer = new StreamWriter("errors.txt", append: true))
+                {
+                    writer.WriteLine(errorMessage);
+                }
+            }
+            finally
+            {
+                lock_.ExitWriteLock();
             }
 
-            // Используем асинхронную запись в файл
-            File.AppendAllTextAsync(errorLogFile, errorMessage + "\n");
         }
     }
+
 }
