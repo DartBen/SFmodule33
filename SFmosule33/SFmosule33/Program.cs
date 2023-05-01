@@ -1,4 +1,6 @@
 
+using Microsoft.AspNetCore.Authentication;
+
 namespace SFmosule33
 {
     public class Program
@@ -13,6 +15,20 @@ namespace SFmosule33
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
+
+            builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = RedirectContext =>
+                        {
+                            RedirectContext.HttpContext.Response.StatusCode = 401;
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+            builder.Services.AddAuthorization();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,6 +46,7 @@ namespace SFmosule33
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

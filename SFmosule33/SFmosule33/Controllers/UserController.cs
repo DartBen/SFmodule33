@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace SFmosule33.Controllers
 {
@@ -35,6 +39,7 @@ namespace SFmosule33.Controllers
             };
         }
 
+        [Authorize]
         [HttpGet]
         [Route("viewmodel")]
         public UserViewModel GetUserViewModel()
@@ -46,7 +51,7 @@ namespace SFmosule33.Controllers
                 LastName = "Иванов",
                 Email = "ivan@gmail.com",
                 Password = "11111122222qq",
-                Login = "ivanov"
+                Login = "ivanov@"
             };
 
             var userViewModel = _mapper.Map<UserViewModel>(user);
@@ -56,7 +61,7 @@ namespace SFmosule33.Controllers
 
         [HttpPost]
         [Route("authenticate")]
-        public UserViewModel Authenticate(string login, string password)
+        public async  Task<UserViewModel> Authenticate(string login, string password)
         {
             if (String.IsNullOrEmpty(login) || String.IsNullOrEmpty(password))
                 throw new ArgumentNullException("Запрос не корректен");
@@ -69,8 +74,17 @@ namespace SFmosule33.Controllers
             if (user.Password != password)
                 throw new AuthenticationException("Введенный пароль не корректен");
 
+            var cliems = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login)
+            };
+
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(cliems, "AppCookies", 
+                ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
             return _mapper.Map<UserViewModel>(user);
         }
-
     }
 }

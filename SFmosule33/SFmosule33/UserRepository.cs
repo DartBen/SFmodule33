@@ -35,6 +35,15 @@
                 Password = "111zzxc1",
                 Login = "anton"
             });
+            _users.Add(new User()
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Дмитрий",
+                LastName = "Рябов",
+                Email = "MyDuck@gmail.com",
+                Password = "12345678",
+                Login = "DM"
+            });
         }
 
         public IEnumerable<User> GetAll()
