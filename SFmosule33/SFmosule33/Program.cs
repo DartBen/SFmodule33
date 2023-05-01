@@ -10,6 +10,10 @@ namespace SFmosule33
             // Add services to the container.
             builder.Services.AddSingleton<ILogger, Logger>();
 
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+            builder.Services.AddSingleton<IUserRepository, UserRepository>();
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
