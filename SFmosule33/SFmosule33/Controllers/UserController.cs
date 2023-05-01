@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 
 namespace SFmosule33.Controllers
 {
@@ -51,6 +52,24 @@ namespace SFmosule33.Controllers
             var userViewModel = _mapper.Map<UserViewModel>(user);
 
             return userViewModel;
+        }
+
+        [HttpPost]
+        [Route("authenticate")]
+        public UserViewModel Authenticate(string login, string password)
+        {
+            if (String.IsNullOrEmpty(login) || String.IsNullOrEmpty(password))
+                throw new ArgumentNullException("Запрос не корректен");
+
+            User user = _userRepository.GetByLogin(login);
+
+            if (user is null)
+                throw new AuthenticationException("Пользователь на найден");
+
+            if (user.Password != password)
+                throw new AuthenticationException("Введенный пароль не корректен");
+
+            return _mapper.Map<UserViewModel>(user);
         }
 
     }
