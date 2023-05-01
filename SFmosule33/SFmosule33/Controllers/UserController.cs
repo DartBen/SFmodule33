@@ -39,7 +39,7 @@ namespace SFmosule33.Controllers
             };
         }
 
-        [Authorize]
+        [Authorize(Roles = "Администратор")]
         [HttpGet]
         [Route("viewmodel")]
         public UserViewModel GetUserViewModel()
@@ -76,7 +76,8 @@ namespace SFmosule33.Controllers
 
             var cliems = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
             };
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(cliems, "AppCookies", 
