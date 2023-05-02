@@ -13,7 +13,8 @@
 
         public async Task Invoke(HttpContext httpContext)
         {
-            _logger.WriteEvent("Сообщение из LogMiddleware");
+            string IpAdress = httpContext.Connection.RemoteIpAddress.ToString();
+            _logger.WriteEvent($"Сообщение из LogMiddleware. Ip - {IpAdress}");
             await _next(httpContext);
         }
     }
