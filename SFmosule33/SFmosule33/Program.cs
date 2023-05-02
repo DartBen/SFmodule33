@@ -49,6 +49,7 @@ namespace SFmosule33
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseLogMiddleware();
 
             app.MapControllers();
 
