@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace SFmosule33.Controllers
 {
+    [ExceptionHandler]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
