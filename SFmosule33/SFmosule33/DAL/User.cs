@@ -1,4 +1,4 @@
-﻿namespace SFmosule33
+﻿namespace SFmosule33.DAL
 {
     public class User
     {

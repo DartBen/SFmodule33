@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace SFmosule33
+namespace SFmosule33.BLL
 {
     public class ExceptionHandler : ActionFilterAttribute, IExceptionFilter
     {

@@ -1,5 +1,5 @@
-
-using Microsoft.AspNetCore.Authentication;
+using SFmosule33.BLL;
+using SFmosule33.DAL;
 
 namespace SFmosule33
 {
@@ -10,7 +10,7 @@ namespace SFmosule33
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddSingleton<ILogger, Logger>();
+            builder.Services.AddSingleton<BLL.ILogger, Logger>();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 

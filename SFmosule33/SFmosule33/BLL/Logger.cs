@@ -1,4 +1,4 @@
-﻿namespace SFmosule33
+﻿namespace SFmosule33.BLL
 {
     public class Logger : ILogger
     {
@@ -36,7 +36,7 @@
             lock_.EnterWriteLock();
             try
             {
-                using (StreamWriter writer = new StreamWriter("errors.txt", append: true))
+                using (StreamWriter writer = new StreamWriter(logDirectory + "errors.txt", append: true))
                 {
                     writer.WriteLine(errorMessage);
                 }

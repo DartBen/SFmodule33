@@ -3,8 +3,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFmosule33.BLL;
+using SFmosule33.DAL;
+using SFmosule33.PLL;
 using System.Security.Authentication;
 using System.Security.Claims;
+using ILogger = SFmosule33.BLL.ILogger;
 
 namespace SFmosule33.Controllers
 {

@@ -1,4 +1,4 @@
-﻿namespace SFmosule33
+﻿namespace SFmosule33.BLL
 {
     public interface ILogger
     {

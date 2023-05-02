@@ -1,6 +1,7 @@
 ﻿using System.Net.Mail;
+using SFmosule33.DAL;
 
-namespace SFmosule33
+namespace SFmosule33.PLL
 {
     public class UserViewModel
     {
@@ -16,7 +17,7 @@ namespace SFmosule33
 
         public string GetFullName(string firstName, string lastName)
         {
-            return String.Concat(firstName, " ", lastName);
+            return string.Concat(firstName, " ", lastName);
         }
 
         public bool GetFromRussiaValue(string email)
